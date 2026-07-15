@@ -1,77 +1,225 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight, Download, Sparkles } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/components/ui/button'
+import { SectionHeading } from '@/components/section-heading'
+import {
+  profile,
+  about,
+  services,
+  projects,
+  testimonials,
+} from '@/lib/profile-data'
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen">
-      <div className="space-y-16">
-        <section className="text-center space-y-6 py-20">
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Welcome to My Portfolio
-          </h1>
-          <p className="text-2xl text-gray-300 max-w-2xl mx-auto">
-            Discover my projects, services, and professional journey
-          </p>
-          <div className="flex gap-4 justify-center pt-8">
-            <a
-              href="/projects"
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
-            >
-              View Projects
-            </a>
-            <a
-              href="/contact"
-              className="px-8 py-3 border border-blue-600 hover:bg-blue-600/10 rounded-lg font-semibold transition-colors"
-            >
-              Get in Touch
-            </a>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-gray-800/50 backdrop-blur p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors">
-            <h3 className="text-xl font-bold mb-2">About Me</h3>
-            <p className="text-gray-300">Learn more about my background and experience</p>
-            <a href="/about" className="text-blue-400 hover:text-blue-300 mt-4 inline-block">
-              Read More →
-            </a>
-          </div>
-
-          <div className="bg-gray-800/50 backdrop-blur p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors">
-            <h3 className="text-xl font-bold mb-2">Projects</h3>
-            <p className="text-gray-300">Check out my latest work and portfolio pieces</p>
-            <a href="/projects" className="text-purple-400 hover:text-purple-300 mt-4 inline-block">
-              View Projects →
-            </a>
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              {profile.availability}
+            </span>
+            <h1 className="mt-5 text-balance font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              {"Hi, I'm "}
+              <span className="text-primary">{profile.name}</span>. {profile.title}.
+            </h1>
+            <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-muted-foreground">
+              {profile.tagline}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/projects"
+                className={buttonVariants({ size: 'lg' })}
+              >
+                View My Work
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href={profile.resumeUrl}
+                className={buttonVariants({ size: 'lg', variant: 'outline' })}
+              >
+                <Download className="h-4 w-4" />
+                Download CV
+              </Link>
+            </div>
           </div>
 
-          <div className="bg-gray-800/50 backdrop-blur p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors">
-            <h3 className="text-xl font-bold mb-2">Services</h3>
-            <p className="text-gray-300">Explore the services I offer to clients</p>
-            <a href="/service" className="text-pink-400 hover:text-pink-300 mt-4 inline-block">
-              Learn More →
-            </a>
+          <div className="relative mx-auto w-full max-w-sm">
+            <div className="absolute -inset-3 -z-10 rounded-3xl bg-primary/20 blur-2xl" />
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
+              <Image
+                src={profile.profileImage || '/placeholder.svg'}
+                alt={`Portrait of ${profile.name}`}
+                width={480}
+                height={560}
+                priority
+                className="h-auto w-full object-cover"
+              />
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="bg-gray-800/50 backdrop-blur p-6 rounded-lg border border-gray-700 hover:border-green-500 transition-colors">
-            <h3 className="text-xl font-bold mb-2">Resume</h3>
-            <p className="text-gray-300">View my professional experience and skills</p>
-            <a href="/resume" className="text-green-400 hover:text-green-300 mt-4 inline-block">
-              Download →
-            </a>
+      {/* Stats */}
+      <section className="border-y border-border bg-card">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-10 sm:px-6 md:grid-cols-4">
+          {profile.stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="font-display text-3xl font-bold text-primary sm:text-4xl">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About preview */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+        <SectionHeading eyebrow="About Me" title={about.headline} />
+        <div className="mt-6 max-w-3xl space-y-4 text-pretty leading-relaxed text-muted-foreground">
+          <p>{about.paragraphs[0]}</p>
+          <p>{about.paragraphs[1]}</p>
+        </div>
+        <Link
+          href="/about"
+          className={cn(
+            buttonVariants({ variant: 'link' }),
+            'mt-4 px-0 text-primary',
+          )}
+        >
+          Read my full story
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </section>
+
+      {/* Services preview */}
+      <section className="bg-secondary/40">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+          <SectionHeading
+            eyebrow="What I Do"
+            title="Services I offer"
+            description="From concept to launch, I help you build products that stand out."
+          />
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <div
+                key={service.title}
+                className="rounded-2xl border border-border bg-card p-6 transition-shadow hover:shadow-md"
+              >
+                <h3 className="font-display text-lg font-bold">{service.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {service.description}
+                </p>
+              </div>
+            ))}
           </div>
-        </section>
-
-        <section className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-lg border border-blue-500/20 rounded-2xl p-12 text-center space-y-4">
-          <h2 className="text-4xl font-bold">Ready to Start a Project?</h2>
-          <p className="text-xl text-gray-300">
-            Get in touch and let's create something amazing together
-          </p>
-          <a
-            href="/contact"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold transition-all"
+          <Link
+            href="/services"
+            className={cn(
+              buttonVariants({ variant: 'link' }),
+              'mt-6 px-0 text-primary',
+            )}
           >
-            Contact Me Now
-          </a>
-        </section>
-      </div>
-    </div>
-  );
+            Explore all services
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Featured projects */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+        <SectionHeading
+          eyebrow="Portfolio"
+          title="Featured projects"
+          description="A selection of things I've designed and built recently."
+        />
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {projects.map((project) => (
+            <article
+              key={project.title}
+              className="group overflow-hidden rounded-2xl border border-border bg-card"
+            >
+              <div className="aspect-[4/3] overflow-hidden bg-muted">
+                <Image
+                  src={project.image || '/placeholder.svg'}
+                  alt={project.title}
+                  width={480}
+                  height={360}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-5">
+                <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+                  {project.category}
+                </span>
+                <h3 className="mt-1 font-display text-lg font-bold">
+                  {project.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-secondary/40">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+          <SectionHeading
+            eyebrow="Kind Words"
+            title="What people say"
+            align="center"
+          />
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {testimonials.map((t) => (
+              <figure
+                key={t.author}
+                className="rounded-2xl border border-border bg-card p-7"
+              >
+                <blockquote className="text-pretty leading-relaxed">
+                  {'"'}
+                  {t.quote}
+                  {'"'}
+                </blockquote>
+                <figcaption className="mt-5">
+                  <p className="font-semibold">{t.author}</p>
+                  <p className="text-sm text-muted-foreground">{t.role}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+        <div className="overflow-hidden rounded-3xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12">
+          <h2 className="text-balance font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            Have a project in mind?
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-pretty leading-relaxed text-primary-foreground/90">
+            {"Let's build something great together. I'm always open to discussing new opportunities."}
+          </p>
+          <Link
+            href="/contact"
+            className={cn(
+              buttonVariants({ size: 'lg', variant: 'secondary' }),
+              'mt-8',
+            )}
+          >
+            Get in touch
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+    </>
+  )
 }

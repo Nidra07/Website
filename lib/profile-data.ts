@@ -10,7 +10,7 @@
 
 export const profile = {
   // --- Basic identity ---
-  name: 'Rudraaksh Singh',
+  name: 'Mr. Rudraaksh Singh',
   title: 'Software & Application Developer',
   tagline:
     'I craft fast, reliable, and beautiful web and software experiences — turning ideas into products that people genuinely enjoy using.',

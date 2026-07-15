@@ -14,19 +14,20 @@ export const profile = {
   title: 'Software & Application Developer',
   tagline:
     'I craft fast, reliable, and beautiful web and software experiences — turning ideas into products that people genuinely enjoy using.',
-  location: 'India',
+  location: 'Bihar, India',
   availability: 'Available for freelance & full-time work',
   profileImage: '/profile.png',
   resumeUrl: '/resume', // dedicated printable resume page with a Download PDF button
 
   // --- Contact ---
   email: 'singhrudraaksh5@gmail.com',
-  phone: '+91 96313 07441',
+  phone: '+91 82077 63881',
 
   // --- Social links (update the handles, or remove any you don't use) ---
   socials: [
-    { label: 'GitHub', href: 'https://github.com/' },
-    { label: 'LinkedIn', href: 'https://linkedin.com/in/' },
+    { label: 'GitHub', href: 'https://github.com/nidra07' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/purushottam-kumar-b192a441b?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
+    { label: 'InstaGram', href: 'https://www.instagram.com/singhh.rudraa/' },
     { label: 'Email', href: 'mailto:singhrudraaksh5@gmail.com' },
   ],
 

@@ -22,12 +22,14 @@ export const profile = {
   // --- Contact ---
   email: 'singhrudraaksh5@gmail.com',
   phone: '+91 82077 63881',
+  // Get a free access key at https://web3forms.com (uses the email above)
+  web3formsAccessKey: '',
 
   // --- Social links (update the handles, or remove any you don't use) ---
   socials: [
-    { label: 'GitHub', href: 'https://github.com/nidra07' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/purushottam-kumar-b192a441b?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
-    { label: 'InstaGram', href: 'https://www.instagram.com/singhh.rudraa/' },
+    { label: 'GitHub', href: 'https://github.com/Nidra07' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/purushottam-kumar-b192a441b/' },
+    { label: 'Instagram', href: 'https://www.instagram.com/singhh.rudraa/' },
     { label: 'Email', href: 'mailto:singhrudraaksh5@gmail.com' },
   ],
 

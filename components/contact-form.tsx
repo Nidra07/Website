@@ -1,24 +1,66 @@
 'use client'
 
 import { useState } from 'react'
-import { CheckCircle2, Send } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { profile } from '@/lib/profile-data'
 
-type Status = 'idle' | 'submitting' | 'success'
+type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 const fieldClass =
   'w-full rounded-lg border border-input bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30'
 
+const accessKey =
+  process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || profile.web3formsAccessKey
+
 export function ContactForm() {
   const [status, setStatus] = useState<Status>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    if (!accessKey) {
+      setErrorMessage(
+        'Contact form is not configured yet. Add your Web3Forms access key in lib/profile-data.ts or NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in .env.local.',
+      )
+      setStatus('error')
+      return
+    }
+
     setStatus('submitting')
-    // Simulate sending — swap this for a real API route or form service.
-    setTimeout(() => {
-      setStatus('success')
-    }, 900)
+    setErrorMessage('')
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    formData.append('access_key', accessKey)
+    formData.append('from_name', profile.name)
+    formData.append('subject', `Portfolio contact: ${formData.get('subject')}`)
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        form.reset()
+        setStatus('success')
+        return
+      }
+
+      setErrorMessage(result.message || 'Something went wrong. Please try again.')
+      setStatus('error')
+    } catch {
+      setErrorMessage('Unable to send your message. Check your connection and try again.')
+      setStatus('error')
+    }
   }
 
   if (status === 'success') {
@@ -47,6 +89,8 @@ export function ContactForm() {
       onSubmit={handleSubmit}
       className="rounded-2xl border border-border bg-card p-6 sm:p-8"
     >
+      <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-sm font-medium">
@@ -103,6 +147,16 @@ export function ContactForm() {
           className={`${fieldClass} resize-y`}
         />
       </div>
+
+      {status === 'error' && errorMessage && (
+        <div
+          role="alert"
+          className="mt-5 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <p>{errorMessage}</p>
+        </div>
+      )}
 
       <Button
         type="submit"
